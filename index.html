@@ -373,7 +373,7 @@
     .ticker-inner {
       display: inline-flex;
       gap: 3rem;
-      animation: scroll-left 35s linear infinite;
+      animation: scroll-left 22s linear infinite;
       font-family: 'Goldman Sans', 'DM Sans', sans-serif;
       font-size: 0.72rem;
       font-weight: 500;
@@ -2597,17 +2597,36 @@
       const inner = document.getElementById('ticker-inner');
       if (!inner || !quotes.length) return;
 
-      // Re-order to match TICKER_SYMBOLS_YF order
+      // Always preserve TICKER_SYMBOLS_YF order; drop any symbols that failed to fetch
       const ordered = TICKER_SYMBOLS_YF.map(sym => quotes.find(q => q.symbol === sym)).filter(Boolean);
 
-      const html = ordered.map(q => {
+      const makeItemHTML = (q, idx) => {
         const meta = TICKER_META[q.symbol] || { label: q.symbol, fmt: 'stock' };
         const priceStr = fmtPrice(q.regularMarketPrice, meta.fmt);
         const { cls, text } = fmtChange(q.regularMarketChangePercent, q.regularMarketChange, meta.fmt);
-        return `<span class="ticker-item"><span class="ticker-name">${meta.label}</span>&nbsp;<span class="ticker-price">${priceStr}</span>&nbsp;<span class="${cls}">${text}</span></span>`;
-      }).join('');
+        return `<span class="ticker-item" data-idx="${idx}"><span class="ticker-name">${meta.label}</span>&nbsp;<span class="ticker-price">${priceStr}</span>&nbsp;<span class="ticker-chg ${cls}">${text}</span></span>`;
+      };
 
-      inner.innerHTML = html + html; // duplicate for seamless loop
+      const existingItems = inner.querySelectorAll('[data-idx]');
+
+      if (existingItems.length === ordered.length * 2) {
+        // Items already exist — update prices in-place so animation keeps rolling uninterrupted
+        ordered.forEach((q, i) => {
+          const meta = TICKER_META[q.symbol] || { label: q.symbol, fmt: 'stock' };
+          const priceStr = fmtPrice(q.regularMarketPrice, meta.fmt);
+          const { cls, text } = fmtChange(q.regularMarketChangePercent, q.regularMarketChange, meta.fmt);
+          [existingItems[i], existingItems[i + ordered.length]].forEach(el => {
+            el.querySelector('.ticker-price').textContent = priceStr;
+            const chgEl = el.querySelector('.ticker-chg');
+            chgEl.textContent = text;
+            chgEl.className = `ticker-chg ${cls}`;
+          });
+        });
+      } else {
+        // First load — build the full HTML (doubled for seamless loop)
+        const html = ordered.map((q, i) => makeItemHTML(q, i)).join('');
+        inner.innerHTML = html + ordered.map((q, i) => makeItemHTML(q, i + ordered.length)).join('');
+      }
     }
 
     // Fetch a single symbol via Yahoo Finance v8 chart endpoint (v7 quote is now auth-gated)
