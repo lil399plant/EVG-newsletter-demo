@@ -2610,46 +2610,49 @@
       inner.innerHTML = html + html; // duplicate for seamless loop
     }
 
+    // Fetch a single symbol via Yahoo Finance v8 chart endpoint (v7 quote is now auth-gated)
+    async function fetchSymbol(sym) {
+      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=5d`;
+      // Try two proxies in sequence
+      for (const proxy of [
+        s => 'https://corsproxy.io/?' + encodeURIComponent(s),
+        s => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(s)
+      ]) {
+        try {
+          const res = await fetch(proxy(url));
+          if (!res.ok) continue;
+          const d = await res.json();
+          const meta = d?.chart?.result?.[0]?.meta;
+          if (!meta?.regularMarketPrice) continue;
+          const prev = meta.previousClose ?? meta.chartPreviousClose ?? meta.regularMarketPrice;
+          return {
+            symbol: sym,
+            regularMarketPrice: meta.regularMarketPrice,
+            regularMarketChange: meta.regularMarketPrice - prev,
+            regularMarketChangePercent: ((meta.regularMarketPrice - prev) / prev) * 100
+          };
+        } catch {}
+      }
+      return null; // symbol unavailable
+    }
+
     async function loadTicker() {
-      const symbols = TICKER_SYMBOLS_YF.join(',');
-      const fields = 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent';
-      const apiUrl = `https://query2.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbols)}&fields=${fields}`;
+      // Fetch all 15 symbols in parallel
+      const results = await Promise.all(TICKER_SYMBOLS_YF.map(fetchSymbol));
+      const quotes = results.filter(Boolean);
 
-      // Attempt 1: corsproxy.io
-      try {
-        const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(apiUrl));
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        const quotes = data?.quoteResponse?.result;
-        if (quotes?.length) { renderTicker(quotes); return; }
-      } catch {}
-
-      // Attempt 2: allorigins.win proxy
-      try {
-        const res = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(apiUrl));
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        const quotes = data?.quoteResponse?.result;
-        if (quotes?.length) { renderTicker(quotes); return; }
-      } catch {}
-
-      // Attempt 3: direct (works if CORS headers allow it)
-      try {
-        const res = await fetch(apiUrl);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        const quotes = data?.quoteResponse?.result;
-        if (quotes?.length) { renderTicker(quotes); return; }
-      } catch {}
-
-      // All proxies failed — show "not found" so no misleading data is displayed
-      const inner = document.getElementById('ticker-inner');
-      if (inner) {
-        const items = TICKER_SYMBOLS_YF.map(sym => {
-          const label = TICKER_META[sym]?.label || sym;
-          return `<span class="ticker-item"><span class="ticker-name">${label}</span>&nbsp;<span class="ticker-unavail">data unavailable</span></span>`;
-        }).join('');
-        inner.innerHTML = items + items;
+      if (quotes.length > 0) {
+        renderTicker(quotes);
+      } else {
+        // Every single request failed — show "data unavailable"
+        const inner = document.getElementById('ticker-inner');
+        if (inner) {
+          const items = TICKER_SYMBOLS_YF.map(sym => {
+            const label = TICKER_META[sym]?.label || sym;
+            return `<span class="ticker-item"><span class="ticker-name">${label}</span>&nbsp;<span class="ticker-unavail">data unavailable</span></span>`;
+          }).join('');
+          inner.innerHTML = items + items;
+        }
       }
     }
 
