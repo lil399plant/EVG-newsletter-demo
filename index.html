@@ -1148,6 +1148,112 @@
     }
 
     /* ============================================
+       MEMBER CARDS
+    ============================================ */
+    .members-section {
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .members-section-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .members-section-header h2 {
+      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+
+    .members-section-header p {
+      font-family: 'Times New Roman', serif;
+      font-size: 0.95rem;
+      color: var(--dim);
+      margin-top: 0.4rem;
+      line-height: 1.6;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .member-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-lt);
+      overflow: hidden;
+    }
+
+    .member-photo-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--bg-section);
+    }
+
+    .member-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .member-info {
+      padding: 1.5rem;
+      border-top: 3px solid var(--blue);
+    }
+
+    .member-name {
+      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--black);
+      margin-bottom: 0.25rem;
+    }
+
+    .member-role {
+      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.9rem;
+    }
+
+    .member-bio {
+      font-family: 'Times New Roman', serif;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--mid);
+    }
+
+    .member-detail {
+      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--dim);
+      margin-top: 0.15rem;
+    }
+
+    .member-detail a {
+      color: var(--dim);
+      text-decoration: none;
+    }
+
+    .member-detail a:hover {
+      color: var(--blue);
+    }
+
+    @media (max-width: 768px) {
+      .member-grid { grid-template-columns: 1fr; max-width: 360px; }
+    }
+
+    /* ============================================
        CONTACT SECTION
     ============================================ */
     .contact-grid {
@@ -1433,9 +1539,8 @@
   <!-- ============================================================
        TICKER
   ============================================================ -->
-  <div class="ticker-strip">
+  <div class="ticker-strip" id="ticker-bar">
     <div class="ticker-inner" id="ticker-inner">
-      <!-- Populated by live market data fetch; static fallback below is shown while loading -->
       <span class="ticker-item ticker-loading"><span class="ticker-name">Fetching live prices</span></span>
     </div>
   </div>
@@ -1577,15 +1682,15 @@
   <div id="tab-about" class="page-section">
     <div class="section-wrap">
       <div class="section-header">
-        <span class="section-label">About EVG</span>
+        <span class="section-label">About the EVG Newsletter Committee</span>
         <span class="section-meta">Columbia University</span>
       </div>
       <div class="about-grid">
         <div class="about-body">
-          <p>The <strong>Enterprise Valuation Group (EVG)</strong> is a student-run finance organization at Columbia University dedicated to developing rigorous, institutional-quality investment analysis and financial research skills among its members.</p>
-          <p>Our flagship product is the <strong>EVG Weekly Newsletter</strong> — a markets-centric publication covering equities, rates, foreign exchange, commodities, and digital assets. Published every week of the semester, the newsletter aims to provide the same quality of analysis found in institutional research, written by Columbia students for Columbia students and the broader finance community.</p>
-          <p>Each issue is organized into three sections: <strong>Markets</strong> (macro and asset class commentary), <strong>Trades</strong> (actionable investment ideas with thesis and risk frameworks), and <strong>Technicals</strong> (interview preparation questions for IB and S&amp;T roles, plus brain teasers).</p>
-          <p>EVG members gain hands-on experience in financial modeling, sector analysis, and written communication — the core skills required for careers in investment banking, sales &amp; trading, asset management, and consulting.</p>
+          <p>The <strong>EVG Newsletter Committee</strong> is a student-run team at Columbia University dedicated to producing the EVG Weekly Newsletter — a markets-centric publication covering equities, rates, foreign exchange, commodities, and digital assets.</p>
+          <p>Each issue delivers institutional-quality analysis written by Columbia students, organized across five asset classes with a focus on actionable investment ideas and real-world market commentary.</p>
+          <p>Committee members develop core finance skills in financial modeling, sector research, and written communication — building the foundation for careers in investment banking, sales &amp; trading, and asset management.</p>
+          <p>The <strong>Enterprise Valuation Group (EVG)</strong> is a broader student organization at Columbia University focused on developing rigorous investment analysis and valuation skills among its members.</p>
 
           <div class="about-stats">
             <div class="about-stat"><div class="about-stat-num">50+</div><div class="about-stat-lbl">Active members</div></div>
@@ -1618,6 +1723,54 @@
           </div>
         </div>
       </div>
+
+      <!-- Meet the Team -->
+      <div class="members-section">
+        <div class="members-section-header">
+          <h2>Meet the Team</h2>
+          <p>The analysts and editors behind the EVG Weekly Newsletter.</p>
+        </div>
+        <div class="member-grid">
+
+          <div class="member-card">
+            <div class="member-photo-wrap">
+              <img src="julia.jpg" alt="Julia Zhang" />
+            </div>
+            <div class="member-info">
+              <div class="member-name">Julia Zhang</div>
+              <div class="member-role">Co-Chair</div>
+              <div class="member-detail">CC'28 · Financial Economics</div>
+              <div class="member-detail"><a href="mailto:mz3166@columbia.edu">mz3166@columbia.edu</a></div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-photo-wrap">
+              <img src="aidan.jpg" alt="Aidan Cook" />
+            </div>
+            <div class="member-info">
+              <div class="member-name">Aidan Cook</div>
+              <div class="member-role">Co-Chair</div>
+              <div class="member-detail">GS'28 · Financial Economics</div>
+              <div class="member-detail"><a href="mailto:ac5783@columbia.edu">ac5783@columbia.edu</a></div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-photo-wrap">
+              <img src="kimberly.jpg" alt="Kimberly Wing" />
+            </div>
+            <div class="member-info">
+              <div class="member-name">Kimberly Wing</div>
+              <div class="member-role">Equities</div>
+              <div class="member-detail">BC'27 · Economics</div>
+              <div class="member-detail"><a href="mailto:knw2140@barnard.edu">knw2140@barnard.edu</a></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1721,7 +1874,7 @@
       <div class="footer-col">
         <h4>Organization</h4>
         <ul>
-          <li><a href="#" onclick="showTab('about');return false;">About EVG</a></li>
+          <li><a href="#" onclick="showTab('about');return false;">About</a></li>
           <li><a href="#" onclick="showTab('contact');return false;">Contact</a></li>
           <li>Columbia University</li>
           <li>New York, NY</li>
@@ -1739,9 +1892,16 @@
     function showTab(name) {
       document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
       document.getElementById('tab-' + name).style.display = 'block';
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      const active = document.querySelector(`.nav-link[data-tab="${name}"]`);
+      // Show hero + ticker only on collections tab
+      const heroEl = document.getElementById('hero-bar');
+      const tickerEl = document.getElementById('ticker-bar');
+      if (heroEl) heroEl.style.display = name === 'collections' ? '' : 'none';
+      if (tickerEl) tickerEl.style.display = name === 'collections' ? '' : 'none';
+      // Update nav active state
+      document.querySelectorAll('.nav-tab').forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-tab[onclick*="'${name}'"]`);
       if (active) active.classList.add('active');
+      window.scrollTo(0, 0);
     }
 
     /* ── Ticker ── */
