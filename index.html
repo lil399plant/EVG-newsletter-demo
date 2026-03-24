@@ -2612,14 +2612,23 @@
 
     // Fetch a single symbol via Yahoo Finance v8 chart endpoint (v7 quote is now auth-gated)
     async function fetchSymbol(sym) {
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=5d`;
-      // Try two proxies in sequence
-      for (const proxy of [
-        s => 'https://corsproxy.io/?' + encodeURIComponent(s),
-        s => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(s)
-      ]) {
+      const qs = '?interval=1d&range=5d';
+      const encodedSym = encodeURIComponent(sym);
+      const directUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedSym}${qs}`;
+
+      // Attempt order:
+      //  1. Vercel rewrite /yf/:symbol  — works on the deployed site, no CORS issues
+      //  2. corsproxy.io                — fallback for local dev / other hosts
+      //  3. allorigins.win              — second fallback
+      const attempts = [
+        () => fetch(`/yf/${encodedSym}${qs}`),
+        () => fetch('https://corsproxy.io/?' + encodeURIComponent(directUrl)),
+        () => fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(directUrl))
+      ];
+
+      for (const attempt of attempts) {
         try {
-          const res = await fetch(proxy(url));
+          const res = await attempt();
           if (!res.ok) continue;
           const d = await res.json();
           const meta = d?.chart?.result?.[0]?.meta;
