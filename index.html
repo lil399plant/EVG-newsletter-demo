@@ -1354,6 +1354,46 @@
     .contact-detail a:hover { text-decoration: underline; }
 
     /* ============================================
+       CONNECT SECTION
+    ============================================ */
+    .connect-wrap {
+      max-width: 520px;
+    }
+
+    .connect-desc {
+      font-family: 'Times New Roman', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--mid);
+      margin-bottom: 2.5rem;
+    }
+
+    .connect-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .connect-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .connect-msg {
+      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      min-height: 1.2em;
+    }
+
+    .connect-msg.success { color: #2a7a2a; }
+    .connect-msg.error   { color: #b00; }
+
+    @media (max-width: 480px) {
+      .connect-row { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
        FOOTER
     ============================================ */
     footer {
@@ -1477,8 +1517,7 @@
       <nav>
         <a class="nav-tab active" href="#" onclick="showTab('collections'); return false;">Newsletter Collections</a>
         <a class="nav-tab" href="#" onclick="showTab('about'); return false;">About</a>
-        <a class="nav-tab" href="#" onclick="showTab('contact'); return false;">Contact</a>
-        <a class="nav-tab nav-subscribe" href="#" onclick="showTab('contact'); return false;">Subscribe</a>
+        <a class="nav-tab nav-subscribe" href="#" onclick="showTab('connect'); return false;">Connect</a>
       </nav>
     </div>
   </header>
@@ -1777,62 +1816,32 @@
   <!-- ============================================================
        TAB: CONTACT
   ============================================================ -->
-  <div id="tab-contact" class="page-section">
+  <div id="tab-connect" class="page-section">
     <div class="section-wrap">
       <div class="section-header">
-        <span class="section-label">Contact &amp; Subscribe</span>
-        <span class="section-meta">Get in Touch</span>
+        <span class="section-label">Connect</span>
+        <span class="section-meta">Stay in the Loop</span>
       </div>
-      <div class="contact-grid">
-        <div>
-          <div class="contact-body">
-            <p>To subscribe to the EVG Weekly Newsletter, submit a question, or inquire about membership, use the form below. We publish every week during the Columbia University semester.</p>
-            <p>If you are a Columbia student interested in joining EVG or contributing to the newsletter, please indicate your area of interest (equities, rates, FX, commodities, crypto, or general research) in your message.</p>
-          </div>
-          <form class="contact-form" onsubmit="handleForm(event)">
+      <div class="connect-wrap">
+        <p class="connect-desc">Subscribe to the EVG Weekly Newsletter — institutional-quality markets analysis delivered every week of the Columbia University semester.</p>
+        <form class="connect-form" id="connect-form" onsubmit="handleConnect(event)">
+          <div class="connect-row">
             <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input type="text" class="form-input" placeholder="Jane Smith" required />
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" id="connect-first" placeholder="Jane" required />
             </div>
             <div class="form-group">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-input" placeholder="jsmith@columbia.edu" required />
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" id="connect-last" placeholder="Smith" required />
             </div>
-            <div class="form-group">
-              <label class="form-label">Subject</label>
-              <select class="form-input">
-                <option>Subscribe to Newsletter</option>
-                <option>Membership Inquiry</option>
-                <option>Content Feedback</option>
-                <option>Partnership / Press</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Message</label>
-              <textarea class="form-textarea" placeholder="Your message..."></textarea>
-            </div>
-            <button type="submit" class="form-submit">Send Message →</button>
-          </form>
-        </div>
-
-        <div>
-          <div class="contact-info-block">
-            <h3>Contact Information</h3>
-            <p class="contact-detail"><strong>Organization:</strong> Enterprise Valuation Group</p>
-            <p class="contact-detail"><strong>University:</strong> Columbia University, New York, NY</p>
-            <p class="contact-detail"><strong>Email:</strong> <a href="mailto:evg@columbia.edu">evg@columbia.edu</a></p>
-            <p class="contact-detail"><strong>Newsletter:</strong> Published weekly during semester</p>
           </div>
-          <div class="contact-info-block">
-            <h3>Newsletter Format</h3>
-            <p class="contact-detail">Each issue covers the prior week's most significant developments across five asset classes: equities, rates, FX, commodities, and digital assets. Issues also include a Technicals Corner with investment banking and sales &amp; trading interview preparation questions.</p>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="connect-email" placeholder="jsmith@columbia.edu" required />
           </div>
-          <div class="contact-info-block">
-            <h3>Disclaimer</h3>
-            <p class="contact-detail" style="font-style:italic; font-size:0.85rem; color:var(--dim);">All content published by EVG is for educational purposes only and does not constitute investment advice. EVG is a student organization and is not affiliated with any registered investment adviser or broker-dealer.</p>
-          </div>
-        </div>
+          <button type="submit" class="form-submit" id="connect-btn">Subscribe →</button>
+          <p class="connect-msg" id="connect-msg"></p>
+        </form>
       </div>
     </div>
   </div>
@@ -1857,7 +1866,7 @@
         <ul>
           <li><a href="#" onclick="showTab('collections');return false;">Archive</a></li>
           <li><a href="#" onclick="openIssue();return false;">Latest Issue</a></li>
-          <li><a href="#" onclick="showTab('contact');return false;">Subscribe</a></li>
+          <li><a href="#" onclick="showTab('connect');return false;">Subscribe</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1875,7 +1884,7 @@
         <h4>Organization</h4>
         <ul>
           <li><a href="#" onclick="showTab('about');return false;">About</a></li>
-          <li><a href="#" onclick="showTab('contact');return false;">Contact</a></li>
+          <li><a href="#" onclick="showTab('connect');return false;">Contact</a></li>
           <li>Columbia University</li>
           <li>New York, NY</li>
         </ul>
@@ -2305,6 +2314,49 @@
         btn.style.borderColor = '';
         e.target.reset();
       }, 3000);
+    }
+
+    /* ── Connect / subscribe form → Google Sheets ── */
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxs_w4tEdyb78TRTRSFeRRLmXBLiFO1VZFsSrFL8Sj-bYBOxKrFecEZEUjhVdjRh83M/exec';
+
+    async function handleConnect(e) {
+      e.preventDefault();
+      const first = document.getElementById('connect-first').value.trim();
+      const last  = document.getElementById('connect-last').value.trim();
+      const email = document.getElementById('connect-email').value.trim();
+      const btn   = document.getElementById('connect-btn');
+      const msg   = document.getElementById('connect-msg');
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+      msg.textContent = '';
+      msg.className = 'connect-msg';
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: first + ' ' + last, email: email })
+        });
+        btn.textContent = 'Subscribed ✓';
+        btn.style.background = '#2a7a2a';
+        msg.textContent = 'You\'re on the list — see you in your inbox!';
+        msg.className = 'connect-msg success';
+        document.getElementById('connect-form').reset();
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Subscribe →';
+          btn.style.background = '';
+          msg.textContent = '';
+          msg.className = 'connect-msg';
+        }, 4000);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe →';
+        msg.textContent = 'Something went wrong — please try again.';
+        msg.className = 'connect-msg error';
+      }
     }
 
     /* ── Init ── */
