@@ -1989,7 +1989,7 @@
       function yf(sym) {
         const ctrl = new AbortController();
         setTimeout(() => ctrl.abort(), 6000);
-        return fetch('/yf/' + encodeURIComponent(sym), { signal: ctrl.signal })
+        return fetch('/api/yf?sym=' + encodeURIComponent(sym), { signal: ctrl.signal })
           .then(r => r.json())
           .catch(() => null);
       }
