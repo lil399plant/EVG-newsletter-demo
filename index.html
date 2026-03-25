@@ -1923,6 +1923,8 @@
 
     /* ── Ticker ── */
     let tickerInterval = null;
+    const yfCache = {}; // client-side cache: sym → { price, change, cur, state, ts }
+    const YF_TTL  = 45000;
 
     // Returns 'us', 'apac', or 'europe' based on current EST time
     function getActiveGroup() {
@@ -1933,74 +1935,134 @@
       return 'europe';                                   // all other times
     }
 
-    // Currency prefix map (ISO 4217 → symbol)
-    const CUR_PFX = {
-      USD: '$',  EUR: '€',  GBP: '£',  JPY: '¥',
-      CNY: '¥',  HKD: 'HK$', KRW: '₩', TWD: 'NT$',
-      INR: '₹',  THB: '฿',  DKK: 'kr ', NOK: 'kr ',
-      SEK: 'kr ', CHF: 'Fr', GBp: 'p',
+    // Ticker groups — fetched via /yf/:symbol Vercel rewrite (preserves browser headers)
+    const TICKER_GROUPS = {
+      us: [
+        { sym: '^GSPC',     label: 'S&P 500'    },
+        { sym: '^DJI',      label: 'DJIA'       },
+        { sym: 'QQQ',       label: 'QQQ'        },
+        { sym: '^IXIC',     label: 'Nasdaq'     },
+        { sym: '^MID',      label: 'S&P 400'    },
+        { sym: '^RUT',      label: 'Russell 2K' },
+        { sym: 'NVDA',      label: 'NVDA'       },
+        { sym: 'MSFT',      label: 'MSFT'       },
+        { sym: 'JPM',       label: 'JPM'        },
+        { sym: 'GC=F',      label: 'Gold'       },
+        { sym: 'BZ=F',      label: 'Brent'      },
+        { sym: 'CL=F',      label: 'WTI'        },
+      ],
+      apac: [
+        { sym: '^N225',     label: 'Nikkei 225'            },
+        { sym: '^TOPX',     label: 'TOPIX'                 },
+        { sym: '^HSI',      label: 'Hang Seng'             },
+        { sym: '000001.SS', label: 'Shanghai'              },
+        { sym: '^KS11',     label: 'KOSPI'                 },
+        { sym: '^TWII',     label: 'TWSE'                  },
+        { sym: '^NSEI',     label: 'Nifty 50'              },
+        { sym: '^SET.BK',   label: 'SET'                   },
+        { sym: 'USDCNY=X',  label: '🇺🇸🇨🇳 USD/CNY', fx: true },
+        { sym: 'USDKRW=X',  label: '🇺🇸🇰🇷 USD/KRW', fx: true },
+        { sym: 'USDTWD=X',  label: '🇺🇸🇹🇼 USD/TWD', fx: true },
+        { sym: 'USDJPY=X',  label: '🇺🇸🇯🇵 USD/JPY', fx: true },
+        { sym: 'GC=F',      label: 'Gold'                  },
+        { sym: 'BZ=F',      label: 'Brent'                 },
+        { sym: 'CL=F',      label: 'WTI'                   },
+      ],
+      europe: [
+        { sym: '^STOXX',    label: 'STOXX 600'   },
+        { sym: '^FTSE',     label: 'FTSE 100'    },
+        { sym: '^GDAXI',    label: 'DAX'         },
+        { sym: '^FCHI',     label: 'CAC 40'      },
+        { sym: 'NVO',       label: 'Novo Nordisk'},
+        { sym: 'MC.PA',     label: 'LVMH'        },
+        { sym: 'ASML.AS',   label: 'ASML'        },
+        { sym: 'SHEL.L',    label: 'Shell'       },
+        { sym: 'AZN.L',     label: 'AstraZeneca' },
+        { sym: 'SAP.DE',    label: 'SAP SE'      },
+        { sym: 'GC=F',      label: 'Gold'        },
+        { sym: 'BZ=F',      label: 'Brent'       },
+        { sym: 'CL=F',      label: 'WTI'         },
+      ],
     };
 
-    function fmtTickerItem(item) {
-      if (item.price == null) return '';
+    // Currency prefix map
+    const CUR_PFX = {
+      USD: '$', EUR: '€', GBP: '£', JPY: '¥',
+      CNY: '¥', HKD: 'HK$', KRW: '₩', TWD: 'NT$',
+      INR: '₹', THB: '฿', DKK: 'kr ', GBp: 'p',
+    };
 
+    function fmtTickerItem(t, d) {
+      if (!d?.price) return '';
       let priceStr;
-      if (item.fx) {
-        // FX rate — smart decimals, no prefix (label already shows pair)
-        const dec = item.price < 10 ? 4 : item.price < 100 ? 2 : 0;
-        priceStr  = item.price.toFixed(dec);
+      if (t.fx) {
+        const dec = d.price < 10 ? 4 : d.price < 100 ? 2 : 0;
+        priceStr  = d.price.toFixed(dec);
       } else {
-        const pfx  = CUR_PFX[item.cur] ?? (item.cur ? item.cur + '\u00a0' : '');
-        const noDec = item.cur === 'JPY' || item.cur === 'GBp';
-        priceStr   = pfx + (noDec
-          ? Math.round(item.price).toLocaleString('en-US')
-          : item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        const pfx   = CUR_PFX[d.cur] ?? (d.cur ? d.cur + '\u00a0' : '');
+        const noDec = d.cur === 'JPY' || d.cur === 'GBp';
+        priceStr    = pfx + (noDec
+          ? Math.round(d.price).toLocaleString('en-US')
+          : d.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
       }
-
-      const isEod = item.state && item.state !== 'REGULAR' && item.state !== 'PRE';
+      const isEod = d.state && d.state !== 'REGULAR' && d.state !== 'PRE';
       const eod   = isEod ? ' <span style="font-size:0.65rem;opacity:0.5;font-style:italic;">EOD</span>' : '';
-      const chg   = item.change ?? 0;
+      const chg   = d.change ?? 0;
       const sign  = chg >= 0 ? '+' : '';
       const cls   = chg >= 0 ? 'ticker-up' : 'ticker-dn';
-
       return `<span class="ticker-item">` +
-        `<span class="ticker-name">${item.label}</span>` +
+        `<span class="ticker-name">${t.label}</span>` +
         `<span class="ticker-price">${priceStr}</span>` +
         `<span class="${cls}">${sign}${chg.toFixed(2)}%${eod}</span>` +
         `</span>`;
     }
 
+    function renderTicker(bar, tickers) {
+      const spans = tickers.map(t => fmtTickerItem(t, yfCache[t.sym])).filter(Boolean);
+      if (spans.length) { const h = spans.join(''); bar.innerHTML = h + h + h; }
+    }
+
+    async function fetchYF(sym) {
+      const c = yfCache[sym];
+      if (c && Date.now() - c.ts < YF_TTL) return;
+      try {
+        const ctrl = new AbortController();
+        setTimeout(() => ctrl.abort(), 5000);
+        const r = await fetch('/yf/' + encodeURIComponent(sym), { signal: ctrl.signal });
+        if (!r.ok) return;
+        const json = await r.json();
+        const meta = json?.chart?.result?.[0]?.meta;
+        if (!meta?.regularMarketPrice) return;
+        const prev = meta.chartPreviousClose || meta.previousClose;
+        const chg  = meta.regularMarketChangePercent
+          ?? (prev ? (meta.regularMarketPrice - prev) / prev * 100 : 0);
+        yfCache[sym] = { price: meta.regularMarketPrice, change: chg, cur: meta.currency, state: meta.marketState, ts: Date.now() };
+      } catch { /* skip */ }
+    }
+
     async function loadTicker() {
       const bar = document.getElementById('ticker-inner');
       if (!bar) return;
-
-      const group = getActiveGroup();
+      const group   = getActiveGroup();
+      const tickers = TICKER_GROUPS[group];
       if (!tickerInterval) tickerInterval = setInterval(loadTicker, 60000);
 
-      try {
-        const ctrl = new AbortController();
-        setTimeout(() => ctrl.abort(), 12000);
-        const res = await fetch('/api/ticker?group=' + group, { signal: ctrl.signal });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const items = await res.json();
+      // Deduplicated symbols, fetched in batches of 3 with 300ms gap
+      const uniq = [...new Set(tickers.map(t => t.sym))];
+      const BATCH = 3;
+      for (let i = 0; i < uniq.length; i += BATCH) {
+        if (i > 0) await new Promise(r => setTimeout(r, 300));
+        await Promise.all(uniq.slice(i, i + BATCH).map(fetchYF));
+        renderTicker(bar, tickers); // update progressively after each batch
+      }
 
-        const spans = items.map(fmtTickerItem).filter(Boolean);
-        if (spans.length) {
-          const html = spans.join('');
-          bar.innerHTML = html + html + html;
+      // Stop US polling when market is closed
+      if (group === 'us') {
+        const vals = uniq.map(s => yfCache[s]).filter(Boolean);
+        if (vals.length && vals.every(d => d.state && d.state !== 'REGULAR' && d.state !== 'PRE')) {
+          clearInterval(tickerInterval); tickerInterval = null;
         }
-
-        // Stop US polling when market is closed (restarts automatically on group switch)
-        if (group === 'us') {
-          const priced = items.filter(i => i.price != null);
-          const allClosed = priced.length > 0 &&
-            priced.every(i => i.state && i.state !== 'REGULAR' && i.state !== 'PRE');
-          if (allClosed && tickerInterval) {
-            clearInterval(tickerInterval);
-            tickerInterval = null;
-          }
-        }
-      } catch(e) { /* keep existing display, retry on next interval */ }
+      }
     }
 
     /* ── Issue section labels ── */
