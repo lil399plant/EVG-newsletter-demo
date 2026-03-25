@@ -59,6 +59,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ── Fetch one symbol via Yahoo Finance v8/chart (no crumb needed) ─
 async function fetchOne(sym) {
+  const errors = [];
   for (const host of ['query1', 'query2']) {
     try {
       const url = `https://${host}.finance.yahoo.com/v8/finance/chart/`
@@ -74,10 +75,10 @@ async function fetchOne(sym) {
         signal: AbortSignal.timeout(6000),
       });
 
-      if (!r.ok) continue;
+      if (!r.ok) { errors.push(`${host}:HTTP${r.status}`); continue; }
       const json = await r.json();
       const meta = json?.chart?.result?.[0]?.meta;
-      if (!meta?.regularMarketPrice) continue;
+      if (!meta?.regularMarketPrice) { errors.push(`${host}:no_meta`); continue; }
 
       return {
         symbol: sym,
@@ -86,9 +87,9 @@ async function fetchOne(sym) {
         cur:    meta.currency,
         state:  meta.marketState,
       };
-    } catch { continue; }
+    } catch(e) { errors.push(`${host}:${e.message}`); continue; }
   }
-  return null;
+  return { symbol: sym, _err: errors.join('|') };
 }
 
 // ── Handler ───────────────────────────────────────────────────────
@@ -127,6 +128,7 @@ module.exports = async (req, res) => {
       change: q?.change ?? null,
       cur:    q?.cur    ?? null,
       state:  q?.state  ?? null,
+      _err:   q?._err   ?? null,
     };
   });
 
