@@ -81,7 +81,11 @@
       font-family: 'Goldman Sans', 'DM Sans', system-ui, sans-serif;
     }
 
-    h1, h2, h3, h4, h5, nav, .sans-text {
+    h1, h2, h3, h4, h5 {
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    nav, .sans-text {
       font-family: 'Goldman Sans', 'DM Sans', system-ui, sans-serif;
     }
 
@@ -421,7 +425,7 @@
     }
 
     .section-label {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       font-weight: 700;
       font-size: 1.5rem;
       color: var(--black);
@@ -490,7 +494,7 @@
     }
 
     .issue-title {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       font-weight: 700;
       font-size: 1.15rem;
       line-height: 1.3;
@@ -615,7 +619,7 @@
     }
 
     .issue-viewer-title {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       font-weight: 700;
       font-size: clamp(1.6rem, 3vw, 2.4rem);
       line-height: 1.1;
@@ -669,6 +673,16 @@
     .article-pane { display: none; }
     .article-pane.active { display: block; }
 
+    /* Article images — drop local files in, name them "YYYY-MM-DD - section - theme.jpg" */
+    .article-section-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      margin: 1.4rem 0 2rem;
+      border: 1px solid var(--border-lt);
+    }
+
     /* Article layout */
     .article-layout {
       display: grid;
@@ -678,7 +692,7 @@
     }
 
     .article-body h2 {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       font-weight: 700;
       font-size: 1.7rem;
       line-height: 1.2;
@@ -702,12 +716,12 @@
       font-size: 1.02rem;
       line-height: 1.8;
       color: var(--dark);
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.8rem;
     }
 
     .article-body h3 {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
-      font-weight: 600;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: 700;
       font-size: 1.05rem;
       color: var(--black);
       letter-spacing: -0.01em;
@@ -1161,8 +1175,8 @@
     }
 
     .members-section-header h2 {
-      font-family: 'Goldman Sans', 'DM Sans', sans-serif;
-      font-weight: 600;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: 700;
       font-size: 1.4rem;
       color: var(--black);
       letter-spacing: -0.01em;
@@ -1600,7 +1614,7 @@
         <!-- Featured: Mar 4 -->
         <div class="issue-card featured" onclick="openIssue('mar3')" style="cursor:pointer;">
           <div class="issue-card-top">
-            <span class="issue-vol">Vol. 1 · Issue 8</span>
+            <span class="issue-vol">Vol. 1 · Issue 4</span>
             <span class="issue-badge">Latest</span>
           </div>
           <div class="issue-title">Middle East in Crisis: Oil Soars</div>
@@ -1626,7 +1640,7 @@
         <!-- Feb 23 -->
         <div class="issue-card" onclick="openIssue('feb23')" style="cursor:pointer;">
           <div class="issue-card-top">
-            <span class="issue-vol">Vol. 1 · Issue 7</span>
+            <span class="issue-vol">Vol. 1 · Issue 3</span>
           </div>
           <div class="issue-title">The Megadeal Never Done: Rio Tinto–Glencore Collapse</div>
           <div class="issue-excerpt">
@@ -1649,7 +1663,7 @@
         <!-- Feb 14 -->
         <div class="issue-card" onclick="openIssue('feb14')" style="cursor:pointer;">
           <div class="issue-card-top">
-            <span class="issue-vol">Vol. 1 · Issue 6</span>
+            <span class="issue-vol">Vol. 1 · Issue 2</span>
           </div>
           <div class="issue-title">SaaSpocalypse 2026: Is AI Eating Software?</div>
           <div class="issue-excerpt">
@@ -1701,7 +1715,7 @@
       <div class="issue-viewer-header">
         <div class="issue-viewer-header-inner">
           <button class="back-btn" onclick="closeIssue()">&#8592; Back to Archive</button>
-          <div class="issue-viewer-vol" id="viewer-vol">Vol. 1 · Issue 8 &nbsp;·&nbsp; Feb 28 – Mar 4, 2026</div>
+          <div class="issue-viewer-vol" id="viewer-vol">Vol. 1 · Issue 4 &nbsp;·&nbsp; Feb 28 – Mar 4, 2026</div>
           <div class="issue-viewer-title">EVG Weekly Newsletter</div>
           <div class="issue-viewer-sub">Markets · Trades · Technicals</div>
         </div>
@@ -2017,12 +2031,12 @@
         fx: `
           <h2>Foreign Exchange</h2>
           <p><em>Charts cover exchange rates from Feb 26 to March 3.</em></p>
-          <p><strong>USD/NOK:</strong> Markets see Norway\u2019s strong external position as a cushion, but in the very short run the pair has moved more with DXY and global risk sentiment than with spot Brent.</p>
-          <p><strong>USD/EGP:</strong> EGP has weakened as the conflict added another layer of risk premia to an already fragile external position, with markets nervous about tourism receipts, Suez-linked revenues and imported energy costs.</p>
-          <p><strong>USD/BRL:</strong> The Iran shock lifted USD/BRL as global risk-off and a higher oil-driven inflation scare led markets to reassess the depth of Brazil\u2019s easing cycle and trim BRL-carry appetite.</p>
-          <p><strong>USD/CAD:</strong> Higher oil and Canada\u2019s terms of trade are supportive, but the global rush into USD, equity selloff and proximity to US risk have kept USD/CAD grinding higher.</p>
-          <p><strong>CHF/USD:</strong> The dollar has reclaimed top haven status and markets start to price a wider rate differential if the SNB leans dovish into an oil-shock slowdown.</p>
-          <p><strong>EUR/USD:</strong> The Iran conflict revived stagflation fears for an energy-import-dependent Eurozone, widening the perceived policy gap versus a Fed constrained from cutting quickly.</p>`,
+          <p><strong>🇺🇸🇳🇴 USD/NOK:</strong> Markets see Norway\u2019s strong external position as a cushion, but in the very short run the pair has moved more with DXY and global risk sentiment than with spot Brent.</p>
+          <p><strong>🇺🇸🇪🇬 USD/EGP:</strong> EGP has weakened as the conflict added another layer of risk premia to an already fragile external position, with markets nervous about tourism receipts, Suez-linked revenues and imported energy costs.</p>
+          <p><strong>🇺🇸🇧🇷 USD/BRL:</strong> The Iran shock lifted 🇺🇸🇧🇷 USD/BRL as global risk-off and a higher oil-driven inflation scare led markets to reassess the depth of Brazil\u2019s easing cycle and trim BRL-carry appetite.</p>
+          <p><strong>🇺🇸🇨🇦 USD/CAD:</strong> Higher oil and Canada\u2019s terms of trade are supportive, but the global rush into USD, equity selloff and proximity to US risk have kept 🇺🇸🇨🇦 USD/CAD grinding higher.</p>
+          <p><strong>🇨🇭🇺🇸 CHF/USD:</strong> The dollar has reclaimed top haven status and markets start to price a wider rate differential if the SNB leans dovish into an oil-shock slowdown.</p>
+          <p><strong>🇪🇺🇺🇸 EUR/USD:</strong> The Iran conflict revived stagflation fears for an energy-import-dependent Eurozone, widening the perceived policy gap versus a Fed constrained from cutting quickly.</p>`,
 
         commodities: `
           <h2>Commodities</h2>
@@ -2097,12 +2111,12 @@
 
         fx: `
           <h2>Foreign Exchange</h2>
-          <p><strong>GBP/USD \u2013 1.3481 (\u22121.25%):</strong> Sterling was the week\u2019s worst-performing major. UK unemployment rose to 5.2% on Tuesday, its highest since February 2021, cementing expectations for a Bank of England rate cut as soon as March. The pair traded defensively in a 1.3435\u20131.3483 range on Friday, capped by ongoing concerns over political uncertainty surrounding PM Starmer\u2019s cabinet and the broader dovish BoE pricing. UK Manufacturing PMI came in at 53.9 and Services at 53.9, both solid, but failed to offset the weight of the labour data and dollar strength.</p>
-          <p><strong>EUR/USD \u2013 1.1786 (\u22120.69%):</strong> The euro retreated modestly over the week, pressured by hawkish FOMC minutes mid-week that raised questions about the pace of Fed rate cuts. Friday brought a sharp intraday spike above 1.1800 after the Supreme Court struck down IEEPA tariffs\u2014briefly the week\u2019s high\u2014before the pair reversed as Trump announced a replacement 10% global tariff. Strong Eurozone PMI data and confirmation from ECB President Lagarde that she intends to serve her full term provided modest underlying support but were not enough to offset the dollar\u2019s mid-week recovery.</p>
-          <p><strong>USD/CHF \u2013 0.7754 (+0.98%):</strong> The franc weakened modestly against the dollar after sharply outperforming the prior week. Safe-haven demand for CHF diminished as risk sentiment stabilized mid-week, and the dollar\u2019s FOMC-driven bid was the dominant force. The pair\u2019s intraday range on Friday ran from 0.7730 to 0.7772. The SNB has remained notably relaxed about franc strength, limiting intervention expectations, while the ongoing dollar debasement trade and a structural CHF tailwind prevented a more aggressive reversal.</p>
-          <p><strong>AUD/USD \u2013 0.7086 (+0.18%):</strong> The Aussie was the week\u2019s most resilient major, essentially unchanged on the week. Hawkish RBA minutes on Tuesday confirming a unanimous February rate hike and flagging persistent inflation risks provided a durable floor for the pair, keeping it anchored near multi-year highs. Friday saw the AUD/USD test towards 0.7100 before easing back modestly alongside broad USD stabilization. Markets continue to price a further RBA hike in May, which remains a structural support for the currency.</p>
-          <p><strong>USD/JPY \u2013 154.99 (+1.50%):</strong> The yen gave back a significant portion of the prior week\u2019s election-driven gains. A brief Monday meeting between PM Takaichi and BoJ Governor Ueda was read as offering little near-term policy coordination, and the pair climbed steadily through the week. Strong Japanese export data on Thursday, the fastest pace in over three years, offered fleeting yen support before USD/JPY resumed higher. Friday\u2019s inflation print, showing Japanese CPI slowing to 1.5% in January from 2.1% in December, complicated the case for near-term BoJ tightening and kept the yen on the back foot into the close.</p>
-          <p><strong>USD/CAD \u2013 1.3674 (+0.42%):</strong> The Canadian dollar softened through the week after January CPI badly missed on Tuesday\u2014headline printing flat at 0.0% month-on-month against a +0.2% forecast, slowing to 2.3% year-on-year. With the Bank of Canada on hold at 2.25% and offering little hawkish guidance, the relative rate outlook tilted against the loonie. Oil prices provided a mixed impulse; a 9 million barrel US inventory draw was bullish, but OPEC+ supply-increase speculation capped crude. The pair oscillated in a 1.3679\u20131.3803 range on Friday as Iran/US tensions added a safe-haven bid for the dollar.</p>`,
+          <p><strong>🇬🇧🇺🇸 GBP/USD \u2013 1.3481 (\u22121.25%):</strong> Sterling was the week\u2019s worst-performing major. UK unemployment rose to 5.2% on Tuesday, its highest since February 2021, cementing expectations for a Bank of England rate cut as soon as March. The pair traded defensively in a 1.3435\u20131.3483 range on Friday, capped by ongoing concerns over political uncertainty surrounding PM Starmer\u2019s cabinet and the broader dovish BoE pricing. UK Manufacturing PMI came in at 53.9 and Services at 53.9, both solid, but failed to offset the weight of the labour data and dollar strength.</p>
+          <p><strong>🇪🇺🇺🇸 EUR/USD \u2013 1.1786 (\u22120.69%):</strong> The euro retreated modestly over the week, pressured by hawkish FOMC minutes mid-week that raised questions about the pace of Fed rate cuts. Friday brought a sharp intraday spike above 1.1800 after the Supreme Court struck down IEEPA tariffs\u2014briefly the week\u2019s high\u2014before the pair reversed as Trump announced a replacement 10% global tariff. Strong Eurozone PMI data and confirmation from ECB President Lagarde that she intends to serve her full term provided modest underlying support but were not enough to offset the dollar\u2019s mid-week recovery.</p>
+          <p><strong>🇺🇸🇨🇭 USD/CHF \u2013 0.7754 (+0.98%):</strong> The franc weakened modestly against the dollar after sharply outperforming the prior week. Safe-haven demand for CHF diminished as risk sentiment stabilized mid-week, and the dollar\u2019s FOMC-driven bid was the dominant force. The pair\u2019s intraday range on Friday ran from 0.7730 to 0.7772. The SNB has remained notably relaxed about franc strength, limiting intervention expectations, while the ongoing dollar debasement trade and a structural CHF tailwind prevented a more aggressive reversal.</p>
+          <p><strong>🇦🇺🇺🇸 AUD/USD \u2013 0.7086 (+0.18%):</strong> The Aussie was the week\u2019s most resilient major, essentially unchanged on the week. Hawkish RBA minutes on Tuesday confirming a unanimous February rate hike and flagging persistent inflation risks provided a durable floor for the pair, keeping it anchored near multi-year highs. Friday saw the 🇦🇺🇺🇸 AUD/USD test towards 0.7100 before easing back modestly alongside broad USD stabilization. Markets continue to price a further RBA hike in May, which remains a structural support for the currency.</p>
+          <p><strong>🇺🇸🇯🇵 USD/JPY \u2013 154.99 (+1.50%):</strong> The yen gave back a significant portion of the prior week\u2019s election-driven gains. A brief Monday meeting between PM Takaichi and BoJ Governor Ueda was read as offering little near-term policy coordination, and the pair climbed steadily through the week. Strong Japanese export data on Thursday, the fastest pace in over three years, offered fleeting yen support before 🇺🇸🇯🇵 USD/JPY resumed higher. Friday\u2019s inflation print, showing Japanese CPI slowing to 1.5% in January from 2.1% in December, complicated the case for near-term BoJ tightening and kept the yen on the back foot into the close.</p>
+          <p><strong>🇺🇸🇨🇦 USD/CAD \u2013 1.3674 (+0.42%):</strong> The Canadian dollar softened through the week after January CPI badly missed on Tuesday\u2014headline printing flat at 0.0% month-on-month against a +0.2% forecast, slowing to 2.3% year-on-year. With the Bank of Canada on hold at 2.25% and offering little hawkish guidance, the relative rate outlook tilted against the loonie. Oil prices provided a mixed impulse; a 9 million barrel US inventory draw was bullish, but OPEC+ supply-increase speculation capped crude. The pair oscillated in a 1.3679\u20131.3803 range on Friday as Iran/US tensions added a safe-haven bid for the dollar.</p>`,
 
         commodities: `
           <h2>Commodities</h2>
@@ -2162,14 +2176,14 @@
 
         fx: `
           <h2>Foreign Exchange</h2>
-          <p><strong>USD/CHF \u2013 0.7679 (\u22121.04%):</strong> The franc outperformed early in the week alongside the yen. While Swiss inflation remains subdued (0.1% y/y in January), maintaining a dovish policy environment, CHF continues to react strongly to safe-haven demand and overall dollar direction.</p>
-          <p><strong>GBP/USD \u2013 1.3651 (+0.26%):</strong> Sterling was broadly stable against the dollar. However, trading was influenced by domestic political uncertainty and sluggish growth signals, with UK Q4 GDP coming in around +0.1%.</p>
-          <p><strong>EUR/USD \u2013 1.1868 (+0.44%):</strong> Markets are pricing that the Fed is closer to cutting than earlier in the year but still slightly more hawkish than the ECB, keeping some USD carry advantage. At the same time, Eurozone data show weak but positive growth, so EUR has stabilized rather than collapsing, leading to a relatively tight range.</p>
-          <p><strong>AUD/USD \u2013 0.7073 (+0.94%):</strong> The Australian dollar found support from the RBA\u2019s early-February tightening cycle. Reuters noted this has helped keep the currency near multi-year highs despite periodic day-to-day pullbacks.</p>
-          <p><strong>USD/CAD \u2013 1.3617 (\u22120.27%):</strong> Initial Canadian dollar strength appeared driven by positioning, with speculators turning net long, as well as sensitivity to oil prices. Reuters linked Monday\u2019s move to broader USD weakness and firmer crude amid U.S.\u2013Iran supply-risk concerns.</p>
-          <p><strong>USD/JPY \u2013 152.70 (\u22122.87%):</strong> Price action was characterized by steady downside pressure and consistently large daily ranges. Reuters attributed much of the yen\u2019s strength to Japan\u2019s domestic political backdrop, particularly dynamics surrounding the election victory of Sanae Takaichi.</p>
+          <p><strong>🇺🇸🇨🇭 USD/CHF \u2013 0.7679 (\u22121.04%):</strong> The franc outperformed early in the week alongside the yen. While Swiss inflation remains subdued (0.1% y/y in January), maintaining a dovish policy environment, CHF continues to react strongly to safe-haven demand and overall dollar direction.</p>
+          <p><strong>🇬🇧🇺🇸 GBP/USD \u2013 1.3651 (+0.26%):</strong> Sterling was broadly stable against the dollar. However, trading was influenced by domestic political uncertainty and sluggish growth signals, with UK Q4 GDP coming in around +0.1%.</p>
+          <p><strong>🇪🇺🇺🇸 EUR/USD \u2013 1.1868 (+0.44%):</strong> Markets are pricing that the Fed is closer to cutting than earlier in the year but still slightly more hawkish than the ECB, keeping some USD carry advantage. At the same time, Eurozone data show weak but positive growth, so EUR has stabilized rather than collapsing, leading to a relatively tight range.</p>
+          <p><strong>🇦🇺🇺🇸 AUD/USD \u2013 0.7073 (+0.94%):</strong> The Australian dollar found support from the RBA\u2019s early-February tightening cycle. Reuters noted this has helped keep the currency near multi-year highs despite periodic day-to-day pullbacks.</p>
+          <p><strong>🇺🇸🇨🇦 USD/CAD \u2013 1.3617 (\u22120.27%):</strong> Initial Canadian dollar strength appeared driven by positioning, with speculators turning net long, as well as sensitivity to oil prices. Reuters linked Monday\u2019s move to broader USD weakness and firmer crude amid U.S.\u2013Iran supply-risk concerns.</p>
+          <p><strong>🇺🇸🇯🇵 USD/JPY \u2013 152.70 (\u22122.87%):</strong> Price action was characterized by steady downside pressure and consistently large daily ranges. Reuters attributed much of the yen\u2019s strength to Japan\u2019s domestic political backdrop, particularly dynamics surrounding the election victory of Sanae Takaichi.</p>
           <h3>FX Story of the Week: Dollar-Yen</h3>
-          <p>USD/JPY was this week\u2019s defining move, sliding almost 3%. Many linked the move to political news after Sanae Takaichi\u2019s election victory, which prompted investors who had been betting on a weaker yen to reduce those positions. As those trades were closed out, the decline in USD/JPY accelerated.</p>
+          <p>🇺🇸🇯🇵 USD/JPY was this week\u2019s defining move, sliding almost 3%. Many linked the move to political news after Sanae Takaichi\u2019s election victory, which prompted investors who had been betting on a weaker yen to reduce those positions. As those trades were closed out, the decline in 🇺🇸🇯🇵 USD/JPY accelerated.</p>
           <p>Although political developments triggered a sharp bout of yen buying, Japan\u2019s broader economic backdrop means Japanese policymakers may not mind a gradually weaker yen. A softer currency can help the country\u2019s exporters, increase the value of profits earned abroad, and push inflation higher in an economy that has struggled with very low price growth.</p>
           <p>Shifts in policy from the Bank of Japan may seem distant, but they carry real consequences for the United States economy. For years, low Japanese interest rates pushed investors to seek higher returns abroad, making them major buyers of U.S. Treasury bonds and other American assets. If yields at home become more attractive, even modestly, some of that capital can stay in Japan. Reduced foreign demand for Treasuries would pressure bond prices and push yields higher, effectively tightening financial conditions without any action from the Federal Reserve.</p>
           <p>Rising yields can filter through quickly to households and businesses via higher mortgage rates, more expensive corporate borrowing, and increased competition for stocks from safer fixed income returns. At the same time, currency adjustments tied to Japanese normalization could weaken the dollar, supporting U.S. exports but potentially adding complexity to the inflation outlook.</p>`,
@@ -2252,12 +2266,12 @@
 
         fx: `
           <h2>Foreign Exchange</h2>
-          <p><strong>7.09\u20137.10 USD/CNY:</strong> The PBoC and CFETS are using the daily fixing and window guidance to cap volatility and prevent sharp depreciation while tolerating a slightly weaker CNY to support exports and offset sluggish domestic demand and property-sector stress. Policy divergence versus the Fed plus growth concerns keep CNY on the weak side of its historical band.</p>
-          <p><strong>0.76 USD/GBP:</strong> The dollar has stayed firm as U.S. growth and real yields remain relatively resilient, while the UK faces weaker growth and sticky inflation that forces the BoE to balance recession risk against cutting too soon. This leaves GBP under modest pressure, with the pair grinding higher toward the upper end of its 2025 range.</p>
-          <p><strong>0.86\u20130.87 USD/EUR:</strong> Markets are pricing that the Fed is closer to cutting than earlier in the year but still slightly more hawkish than the ECB, keeping some USD carry advantage. At the same time, Eurozone data show weak but positive growth, so EUR has stabilized rather than collapsing, leading to a relatively tight range.</p>
-          <p><strong>32.0\u201332.5 USD/TWD:</strong> TWD is pulled between strong structural demand linked to Taiwan\u2019s semiconductor/export cycle and cyclical pressure from softer global electronics orders and lingering geopolitical risk premia. Higher U.S. yields and cautious global risk appetite have kept USD/TWD elevated versus earlier in the cycle, even as tech exports show signs of stabilizing.</p>
-          <p><strong>156 USD/JPY:</strong> Very wide rate differentials remain the dominant force, with the BoJ only tentatively exiting ultra-easy policy while U.S. real yields are still positive. That keeps JPY weak and supports USD/JPY, tempered periodically by intervention risk and official jawboning whenever the pair probes new highs.</p>
-          <p><strong>1.40 USD/CAD:</strong> CAD is pressured by softer domestic growth, relatively dovish BoC expectations, and only modest support from oil prices, while the Fed remains comparatively hawkish. As a result, USD/CAD trades toward the top of its post-pandemic range, consistent with markets pricing slower Canada growth and persistent U.S. rate premium.</p>`,
+          <p><strong>7.09\u20137.10 🇺🇸🇨🇳 USD/CNY:</strong> The PBoC and CFETS are using the daily fixing and window guidance to cap volatility and prevent sharp depreciation while tolerating a slightly weaker CNY to support exports and offset sluggish domestic demand and property-sector stress. Policy divergence versus the Fed plus growth concerns keep CNY on the weak side of its historical band.</p>
+          <p><strong>0.76 🇺🇸🇬🇧 USD/GBP:</strong> The dollar has stayed firm as U.S. growth and real yields remain relatively resilient, while the UK faces weaker growth and sticky inflation that forces the BoE to balance recession risk against cutting too soon. This leaves GBP under modest pressure, with the pair grinding higher toward the upper end of its 2025 range.</p>
+          <p><strong>0.86\u20130.87 🇺🇸🇪🇺 USD/EUR:</strong> Markets are pricing that the Fed is closer to cutting than earlier in the year but still slightly more hawkish than the ECB, keeping some USD carry advantage. At the same time, Eurozone data show weak but positive growth, so EUR has stabilized rather than collapsing, leading to a relatively tight range.</p>
+          <p><strong>32.0\u201332.5 🇺🇸🇹🇼 USD/TWD:</strong> TWD is pulled between strong structural demand linked to Taiwan\u2019s semiconductor/export cycle and cyclical pressure from softer global electronics orders and lingering geopolitical risk premia. Higher U.S. yields and cautious global risk appetite have kept 🇺🇸🇹🇼 USD/TWD elevated versus earlier in the cycle, even as tech exports show signs of stabilizing.</p>
+          <p><strong>156 🇺🇸🇯🇵 USD/JPY:</strong> Very wide rate differentials remain the dominant force, with the BoJ only tentatively exiting ultra-easy policy while U.S. real yields are still positive. That keeps JPY weak and supports 🇺🇸🇯🇵 USD/JPY, tempered periodically by intervention risk and official jawboning whenever the pair probes new highs.</p>
+          <p><strong>1.40 🇺🇸🇨🇦 USD/CAD:</strong> CAD is pressured by softer domestic growth, relatively dovish BoC expectations, and only modest support from oil prices, while the Fed remains comparatively hawkish. As a result, 🇺🇸🇨🇦 USD/CAD trades toward the top of its post-pandemic range, consistent with markets pricing slower Canada growth and persistent U.S. rate premium.</p>`,
 
         commodities: `
           <h2>Commodities</h2>
