@@ -1985,10 +1985,17 @@
         tickerInterval = setInterval(loadTicker, 60000);
       }
 
+      // Helper: fetch with 6s timeout via serverless proxy
+      function yf(sym) {
+        const ctrl = new AbortController();
+        setTimeout(() => ctrl.abort(), 6000);
+        return fetch('/api/yf?sym=' + encodeURIComponent(sym), { signal: ctrl.signal })
+          .then(r => r.json())
+          .catch(() => null);
+      }
+
       try {
-        const results = await Promise.all(
-          tickers.map(t => fetch('/yf/' + encodeURIComponent(t.sym)).then(r => r.json()).catch(() => null))
-        );
+        const results = await Promise.all(tickers.map(t => yf(t.sym)));
 
         let usMarketClosed = false;
 
