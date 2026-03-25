@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const sym = req.query.sym;
   if (!sym) return res.status(400).json({ error: 'sym required' });
 
